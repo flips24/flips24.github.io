@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="getSheetData.js"></script>
+    <script src="ml.js" defer></script>
+    <title>FLIPS ©️ 2024</title>
+    <link rel="icon" href="img/hero-vr.png" type="image/x-icon">
+    <link rel="stylesheet" href="gaya.css">
+    
+    <meta property="og:title" content="Flash Inflation Prediction System">
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="2000">
+    <meta property="og:description" content="Memprediksi Inflasi di Jatim Secara Realtime">
+      <meta property="og:image" itemprop="image" content="img/hero-vr.png">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+</head>
+<body>
+    <h1 id="awal" style="text-align: center; font-size: 30px; margin-top: 50px; font-weight: bolder; color: #fff; letter-spacing: 2pt;">
+        FLASH INFLATION PREDICTION SYSTEM
+    </h1>
+    <h3 class="tagline"><i></i></h3>
+    <br>
+    <br>
+    <div style="display: flex; justify-content: center;">
+        <label for="startDate">
+            <span style="display: block; font-size: 18px; color: whitesmoke;">Tanggal mulai</span>
+            <input type="date" name="startDate" id="startDate" onchange="fixTgl(); filterBerita(); filterHarga(); filterMomentum()" style="height: 35px; border-radius: 7px; border: 0 !important; outline: 0 !important; width: 180px; font-size: 17px;">
+        </label>
+        <label for="endDate" style="padding-left: 20px;">
+            <span style="display: block; font-size: 18px; color: whitesmoke;">Tanggal selesai</span>
+            <input type="date" name="endDate" id="endDate" onchange="fixTgl(); filterBerita(); filterHarga(); filterMomentum()" style="height: 35px; border-radius: 7px; border: 0 !important; outline: 0 !important; width: 180px; font-size: 17px;">
+        </label>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+        <label for="bapo">
+            <span style="display: block; font-size: 18px; color: whitesmoke;">Komoditas</span>
+            <select name="bapo" id="bapo" onchange="filterBerita(); filterHarga();" style="border-radius: 7px; cursor: pointer; border: 0 !important; outline: 0 !important; max-width: 25vw; height: 35px; font-size: 15px;">
+                <option value="" selected>&nbsp;--- Silakan pilih ---&nbsp;</option>
+            </select>
+        </label>
+        <div class="wrapper" style="padding-left: 15px; margin: auto 0;">
+            <span style="display: block; font-size: 18px; color: whitesmoke;">Wilayah</span>
+            <div class="select-btn" style="background: #fff; max-width: 55vw; height: 35px; padding: 0 15px; border-radius: 7px; justify-content: space-between;">
+                <span style="font-size: 15px;" id="pilihKota">&nbsp;--- Silakan pilih ---&nbsp;</span>
+                <i class="uil uil-angle-down" style="font-size: 25px;"></i>
+            </div>
+            <div class="content">
+                <div class="search">
+                    <i class="uil uil-search"></i>
+                    <input type="text" name="kabkot" id="kabkot" autocomplete="off" autofocus>
+                </div>
+                <ul class="options"></ul>
+            </div>
+        </div>
+        <span id="hitung" style="padding-left: 6px; display: none;">-1</span>
+        <span id="countIsi" style="padding-left: 6px; display: none;">-1</span>
+        
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 30px;">
+        <button type="button" id="analyze" value="off" onclick="analisa()">Analisa!</button>
+    </div>
+    <section class="main-container">
+        
+        <div class="tab-nav-bar">
+            <div class="tab-navigation tempel" style="display: none;">
+                <!--<i class="uil uil-angle-left left-btn"></i>-->
+                <!--<i class="uil uil-angle-right right-btn"></i>-->
+                <ul class="tab-menu">
+                    <li class="tab-btn">Prediksi</li>
+                    <li class="tab-btn">Grafik</li>
+                    <li class="tab-btn">Metadata</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab prediksi">
+                <div class="container tab-content2">
+                    <div class="card-row">
+                        <div class="card card-1">
+                            <div class="badge"></div>
+                            <h3>Prediksi Inflasi</h3>
+                            <h3></h3>
+                        </div>
+                        <div class="card card-2" style="cursor: pointer">
+                            <a href="https://jatim.bps.go.id/indicator/3/1/1/inflasi-bulanan-m-to-m-.html" target="_blank" style="text-decoration: none; color: #000;">
+                                <div class="badge"></div>
+                                <h3>Rilis Inflasi</h3>
+                                <h3></h3>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card card-3" style="background: #9566d2">
+                        <h3>Prediksi Inflasi</h3>
+                        <h3></h3>
+                        <p></p>
+                    </div>
+                    
+                </div>
+                
+                <br>
+                <div class="container">
+                    <div class="card-4" style="display: none;">
+                        <h3>Komoditas Leading</h3>
+                        <div class="card">
+                            <h3></h3>
+                        </div>
+                        <div id="box"></div>
+                    </div>   
+                </div>
+    
+                <br>
+    
+                <!-- Berita -->
+                <div class="berita">
+                    <h3>Fenomena Pendukung</h3>
+                    <!-- Heading Berita -->
+                    <div class="heading">
+                        <a class="link-berita" target="_blank">
+                            <img style="width: 100%;">
+                        </a>
+                        <a class="link-berita"
+                        style="text-decoration: none;" target="_blank">
+                            <h4></h4>
+                        </a>
+                        <p style="text-align: center; font-size: 17px; margin-top: 10px; cursor: pointer;" 
+                            onclick="updateName(this.querySelector('span')); filterBerita(); filterHarga(); filterMomentum()"></p>
+                        <p style="text-align: center; font-size: 17px; margin-top: 5px;"></p>
+                        <div class="read-more">
+                            <a class="link-berita" target="_blank">
+                                Baca Selengkapnya ...
+                            </a>
+                        </div>
+                    </div>
+                    <!-- End Heading -->
+    
+                    <!-- 9 Berita sisanya -->
+                    <div class="berita-sisa">
+                    </div>
+                    <!-- End -->
+                </div>
+            </div>
+
+            <div class="tab grafik">
+                <br><br><br>
+                <div class="chartCard">
+                    <div class="chartBox hargabapo" style="display: none;">
+                      <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+                <br><br>
+                <div class="chartCard">
+                    <div class="chartBox sentimen" style="display: none;">
+                      <canvas id="myChartSentimen"></canvas>
+                    </div>
+                </div>
+                <br><br>
+                <div class="chartCard">
+                    <div class="chartBox fenomena" style="display: none;">
+                      <canvas id="myChartFenomena"></canvas>
+                    </div>
+                </div>
+                <br><br>
+                <div class="chartCard">
+                    <div class="chartBox wordcloud" style="display: none;">
+                        <h3 class="judul-wcloud" style="text-align: center; color: #fff; padding-top: 8px;"></h3>
+                        <h3 class="judul-wcloud" style="text-align: center; color: #fff; margin-bottom: 15px;"></h3>
+                        <section class="cloud"></section>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="tab metadata">
+                <br><br><br>
+                <div class="cardMeta" style="margin-bottom: 40px; color: #fff;">
+                    <div style="font-size: 25px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+                        Konsep dan Definisi
+                    </div>
+                    <ul style="margin-left: 25px; font-size: 17px; line-height: 28px; text-align: justify;">
+                        <li>Siskaperbapo adalah kepanjangan dari Sistem Informasi Ketersediaan dan Perkembangan Harga Bahan Pokok di Jawa Timur. Sistem ini dibangun oleh kolaborasi antara Pemprov Jawa Timur, Kementerian Perdagangan, PIHPS Nasional, serta Bank Indonesia (BI)</li>
+                        <li>Inflasi adalah kenaikan sejumlah Harga barang dan jasa secara umum yang berlangsung terus-menerus selama periode tertentu dan di wilayah tertentu</li>
+                        <li>Inflasi <i>month to month</i> (bulan ke bulan) merupakan inflasi pada bulan ini dibanding inflasi bulan sebelumnya</li>
+                        <li>Komoditas <i>Leading</i> adalah 5 komoditas yang perubahan harganya memiliki korelasi absolut terbesar terhadap inflasi</li>
+                        <li><i>Machine Learning</i> adalah istilah pemodelan statistik kontemporer yang memisahkan data latih (data <i>training</i>) dan data uji (data <i>testing</i>)</li>
+                        <li><i>Unsupervised Learning</i> merupakan jenis <i>Machine Learning</i> di mana tidak memerlukan pemecahan set data menjadi data latih dan data uji</li>
+                        <li>Regresi Linier Berganda merupakan salah satu model <i>unsupervised learning</i> ketika tidak ada proses pemecahan data latih dan data uji</li>
+                    </ul>
+
+                    <hr style="margin-top: 20px; margin-bottom: 15px; border: 0.3px solid #db9fe2;">
+                    
+                    <div style="font-size: 25px; font-weight: bold; text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                        Periode Referensi
+                    </div>
+                    <ul style="margin-left: 25px; font-size: 17px; line-height: 28px;">
+                        <li>Data yang digunakan dalam aplikasi ini bersumber dari laman Siskaperbapo dan beberapa laman berita daring selama periode 1 Juli 2023 - hari ini</li>
+                    </ul>
+
+                    <hr style="margin-top: 20px; margin-bottom: 15px; border: 0.3px solid #db9fe2;">
+                    <div style="font-size: 25px; font-weight: bold; text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                        Keranjang Komoditas
+                    </div>
+                    <ul style="margin-left: 25px; font-size: 17px; line-height: 28px;">
+                        <li>Komoditas yang digunakan sebanyak 67</li>
+                    </ul>
+                    
+                    <hr style="margin-top: 20px; margin-bottom: 15px; border: 0.3px solid #db9fe2;">
+                    <div style="font-size: 25px; font-weight: bold; text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                        Satuan
+                    </div>
+                    <ul style="margin-left: 25px; font-size: 17px; line-height: 28px;">
+                        <li>Satuan Harga Komoditas: Rupiah</li>
+                        <li>Satuan Inflasi: persen (%)</li>
+                    </ul>
+
+                    <hr style="margin-top: 20px; margin-bottom: 15px; border: 0.3px solid #db9fe2;">
+                    <div style="font-size: 25px; font-weight: bold; text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                        Sumber Data <i>Stream</i>
+                    </div>
+                    <ul style="margin-left: 25px; font-size: 17px; line-height: 28px;">
+                        <li>Siskaperbapo</li>
+                        <li style="list-style: none;">
+                            <i>
+                                <a href="https://siskaperbapo.jatimprov.go.id" style="text-decoration: none; color: #fff;" target="_blank">https://siskaperbapo.jatimprov.go.id</a>
+                            </i>
+                        </li>
+                    </ul>
+
+                    <hr style="margin-top: 20px; margin-bottom: 15px; border: 0.3px solid #db9fe2;">
+                    <div style="font-size: 25px; font-weight: bold; text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                        Sumber Data Daring
+                    </div>
+                    <ul style="margin-left: 25px; font-size: 17px; line-height: 28px;">
+                        <li>beritajatim.com</li>
+                        <li>Radar Jember</li>
+                        <li>Radar Tulungagung</li>
+                        <li>Radar Banyuwangi</li>
+                        <li>Radar Lamongan</li>
+                        <li>Radar Madiun</li>
+                        <li>Radar Bromo</li>
+                        <li>Warta Bromo</li>
+                        <li>detik.com</li>
+                        <li>rri.co.id</li>
+                        <li>databoks.katadata.co.id</li>
+                        <li>mediacentral.info</li>
+                        <li>jatimnetwork.com</li>
+                        <li>ketik.co.id</li>
+                    </ul>
+
+                    <hr style="margin-top: 20px; margin-bottom: 15px; border: 0.3px solid #db9fe2;">
+                    <div style="font-size: 25px; font-weight: bold; text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                        Teknik Akuisisi Data
+                    </div>
+                    <ul style="margin-left: 25px; font-size: 17px; line-height: 28px; text-align: justify;">
+                        <li>API <i>Scraping</i>, yaitu teknik <i>scraping</i> (perambahan) data atau informasi yang bersifat publik dengan memanfaatkan <i>Application Programming Interface</i> (API) sebagai kunci mengakuisisi sebagian data yang tersedia pada suatu laman atau situs</li>
+                        <li><i>Pseudo Scraping</i>, yaitu teknik <i>scraping</i> semi-automatis dengan menjalankan sejumlah <i>script</i> berbahasa tertentu (R) terhadap sejumlah situs untuk mengakuisisi data atau informasi yang bersifat publik kemudian diolah secara manual untuk meningkatkan kualitas data atau informasi yang telah diperoleh</li>
+                    </ul>
+                    <br><br>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <a href="#awal" id="toTop">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
+            </svg>
+        </a>
+        <br>
+        <br>
+        <br>
+        <br>
+
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/TextPlugin.min.js"></script>
+    <script>
+        gsap.registerPlugin(TextPlugin);
+        gsap.to(".tagline i", {duration: 2.5, delay: 1.5, text: "Prediksi Cepat di Ujung Jemari Anda"});
+    </script>
+
+
+    <script>
+        let bln;
+        let tgl;
+
+        // Untuk hari ini
+        let currDate = new Date();
+        if (currDate.getMonth()+1 < 10) {
+            bln = `0${currDate.getMonth()+1}`;
+        } else {
+            bln = currDate.getMonth()+1;
+        }
+        if (currDate.getDate() < 10) {
+            tgl = `0${currDate.getDate()}`;
+        } else {
+            tgl = currDate.getDate();
+        }
+        startDate.max = `${currDate.getFullYear()}-${bln}-01`; // oke
+        endDate.max = `${currDate.getFullYear()}-${bln}-${tgl}`; // oke
+        
+        // Untuk sebulan ke belakang
+        let currDatePrev1 = new Date();
+        let blnPrev1;
+
+        // Kurangi sebulan
+        currDatePrev1.setMonth(currDatePrev1.getMonth()-1);
+        if (currDatePrev1.getMonth()+1 < 10) {
+            blnPrev1 = `0${currDatePrev1.getMonth()+1}`;
+        } else {
+            blnPrev1 = currDatePrev1.getMonth()+1;
+        }
+        endDate.value = `${currDatePrev1.getFullYear()}-${blnPrev1}-01`; // oke
+
+        // Untuk 11 bulan ke belakang
+        let currDatePrev11 = new Date();
+        let blnPrev11;
+
+        // Jika skrg tgl 31
+        let mundur12Bln = new Date();
+        let blnMundur12;
+        mundur12Bln.setMonth(mundur12Bln.getMonth() - 12);
+        mundur12Bln.setDate(mundur12Bln.getDate() + 1);
+        if (mundur12Bln.getMonth()+1 < 10) {
+            blnMundur12 = `0${mundur12Bln.getMonth()+1}`;
+        } else {
+            blnMundur12 = mundur12Bln.getMonth()+1;
+        }
+
+        // Kurangi 11 bulan
+        currDatePrev11.setMonth(currDatePrev11.getMonth() - 11);
+        if (currDatePrev11.getMonth()+1 < 10) {
+            blnPrev11 = `0${currDatePrev11.getMonth()+1}`;
+        } else {
+            blnPrev11 = currDatePrev11.getMonth()+1;
+        }
+        
+        const daysInMonth = (year, month) => new Date(year, month, 0).getDate();
+        if (currDate.getDate() == 31) {
+            startDate.value = `${mundur12Bln.getFullYear()}-${blnMundur12}-01`; // oke
+            startDate.min = `${mundur12Bln.getFullYear()}-${blnMundur12}-01`; // oke
+        } else {
+            startDate.value = `${currDatePrev11.getFullYear()}-${blnPrev11}-01`; // oke
+            startDate.min = `${currDatePrev11.getFullYear()}-${blnPrev11}-01`; // oke
+        }
+        endDate.min = `${currDatePrev11.getFullYear()}-${blnPrev11}-${daysInMonth(currDatePrev11.getFullYear(), currDatePrev11.getMonth()+1)}`; // oke
+
+        function fixTgl() {
+            if (new Date(startDate.value) > new Date(endDate.value)) {
+                swal.fire({
+                    title: "Tanggal tidak valid!",
+                    text: "Tanggal diperbaiki secara otomatis",
+                    icon: "info",
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+                let awal = new Date(endDate.value);
+                let akhir = new Date(startDate.value);
+                
+                // Inisiasi bln & tgl
+                let blnAwal, blnAkhir, tglAwal, tglAkhir;
+
+                // Konversi bln & tgl awal
+                if (awal.getMonth()+1 < 10) {
+                    blnAwal = `0${awal.getMonth()+1}`;
+                } else {
+                    blnAwal = awal.getMonth()+1;
+                }
+                if (awal.getDate() < 10) {
+                    tglAwal = `0${awal.getDate()}`;
+                } else {
+                    tglAwal = awal.getDate();
+                }
+                
+                // Konversi bln & tgl akhir
+                if (akhir.getMonth()+1 < 10) {
+                    blnAkhir = `0${akhir.getMonth()+1}`;
+                } else {
+                    blnAkhir = akhir.getMonth()+1;
+                }
+                if (akhir.getDate() < 10) {
+                    tglAkhir = `0${akhir.getDate()}`;
+                } else {
+                    tglAkhir = akhir.getDate();
+                }
+                
+                // Tukar posisinya
+                startDate.value = `${awal.getFullYear()}-${blnAwal}-${tglAwal}`
+                endDate.value = `${akhir.getFullYear()}-${blnAkhir}-${tglAkhir}`
+            }
+        }
+    
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        let stickyElem = document.querySelector(".tempel");
+
+        // Hide stickyElem on Scroll Down & Show on Scroll Up
+        let lastScrollTop = 0;
+
+        window.onscroll = () => {
+            if (window.pageYOffset > 340) {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop) {
+                    stickyElem.style.top = "-80px";
+                    stickyElem.style.transition = "0.8s";
+                } else {
+                    stickyElem.style.top = "10px";
+                    stickyElem.style.transition = "0.8s";
+                }
+                lastScrollTop = scrollTop;
+
+
+                toTop.setAttribute("style", "visibility: visible; display: flex;");
+                stickyElem.style.position = "fixed";
+                stickyElem.style.zIndex = 999;
+                // stickyElem.style.top = "10px";
+                if (screen.width >= 412 && screen.width < 768) {
+                    stickyElem.style.left = "33px";
+                }
+                if (screen.width >= 768 && screen.width < 820) {
+                    stickyElem.style.left = "190px";
+                }
+                if (screen.width >= 820 && screen.width < 1024) {
+                    stickyElem.style.left = "300px";
+                }
+                if (screen.width >= 1024 && screen.width < 1180) {
+                    stickyElem.style.left = "35vw";
+                }
+                if (screen.width >= 1180 && screen.width < 1366) {
+                    stickyElem.style.left = "37vw";
+                }
+                if (screen.width >= 1366) {
+                    stickyElem.style.left = "40vw";        
+                }
+                
+            } 
+            else {
+                toTop.setAttribute("style", "visibility: hidden;");
+                stickyElem.style.position = "relative";
+                stickyElem.style.top = "initial";
+                stickyElem.style.left = "initial";
+            }
+        }
+        
+        // Posisi elemen di card-1, card-2 & card-3
+        let card1 = document.querySelectorAll(".card-1 h3");
+        let card2 = document.querySelectorAll(".card-2 h3");
+        let card3 = document.querySelectorAll(".card-3 h3");
+        
+        window.onresize = () => {
+            if (screen.width >= 768 && screen.width <= 882) {
+                card1.forEach((c) => c.style.textAlign = "left");
+                card2.forEach((rilis) => rilis.style.textAlign = "right");
+            } else {
+                card1.forEach((c) => c.style.textAlign = "center");
+                card2.forEach((rilis) => rilis.style.textAlign = "center");
+            }
+            
+            if (screen.width <= 600) {
+                card3.forEach((c3) => c3.style.fontSize = "1.5em");
+            } else {
+                card3.forEach((c3) => c3.style.fontSize = "2em");
+            }
+        }
+        window.onload = () => {
+            if (screen.width >= 768 && screen.width <= 882) {
+                card1.forEach((c) => c.style.textAlign = "left");
+                card2.forEach((rilis) => rilis.style.textAlign = "right");
+            } else {
+                card1.forEach((c) => c.style.textAlign = "center");
+                card2.forEach((rilis) => rilis.style.textAlign = "center");
+            }
+            
+            if (screen.width <= 600) {
+                card3.forEach((c3) => c3.style.fontSize = "1.5em");
+            } else {
+                card3.forEach((c3) => c3.style.fontSize = "2em");
+            }
+        }
+
+    </script>
+    <script src="statistics.min.js"></script>
+    <script src="d3.layout.cloud.js"></script>
+    
+</body>
+</html>
