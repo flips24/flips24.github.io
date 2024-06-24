@@ -623,8 +623,8 @@ input[type="date"]::-webkit-inner-spin-button {
     visibility: hidden;
     align-items: center;
     justify-content: center;
-    height: 30px;
-    width: 30px;
+    height: 40x;
+    width: 40px;
     background: var(--first-color);
     border-radius: 50%;
     position: fixed;
