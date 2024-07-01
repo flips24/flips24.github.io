@@ -146,20 +146,38 @@ input[type="date"]::-webkit-inner-spin-button {
 }
 
 #analyze {
-    display: block;
+    display: inline-block;
     width: 30%;
     cursor: pointer;
     height: 40px;
     font-size: 25px;
-    background: skyblue;
-    outline: none;
-    border: none;
-    border-radius: 15px;
+    font-weight: 500;
+    color: #007bff;
+    background: transparent;
+    border: 2px solid #007bff;
+    border-radius: 40px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: 0.7s;
+    overflow: hidden;
 }
 #analyze:hover {
-    background: var(--first-color);
-    text-transform: uppercase;
-    font-weight: bold;
+    background: #007bff;
+    box-shadow: 0 0 25px #007bff,
+    0 0 100px #007bff,
+    0 0 150px #007bff;
+}
+
+#analyze span {
+    position: relative;
+    display: inline-block;
+    transition: transform 0.5s;
+    text-shadow: 0 35px #fff;
+    transform: translateY(0px);
+}
+#analyze:hover span.sorot,
+#analyze span.sorot {
+    transform: translateY(-35px);
 }
 
 
