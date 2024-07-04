@@ -1899,6 +1899,33 @@ function analisa() {
         analyze.value = "on";
         analyze.innerHTML = "Reset";
 
+        // Menyala ANALYZE kuuu!!
+        let text = analyze.textContent;
+        analyze.innerHTML = '';
+
+        for (let char of text) {
+            let span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            analyze.appendChild(span);
+        }
+        let spans = analyze.querySelectorAll('span');
+
+        analyze.addEventListener('mouseenter', () => {
+            spans.forEach((span, idx) => {
+                setTimeout(() => {
+                    span.classList.add('sorot');
+                }, idx*50);
+            });
+        });
+
+        analyze.addEventListener('mouseleave', () => {
+            spans.forEach((span, idx) => {
+                setTimeout(() => {
+                    span.classList.remove('sorot');
+                }, idx*50);
+            });
+        });
+
         if (now.getDate() == 31) {
             getSheetData({
                 sheetName: "Bulanan",
